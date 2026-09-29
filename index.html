@@ -1,0 +1,762 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: columna de introduccion a la izquierda, telefono con el prototipo a la derecha; en pantallas angostas se apilan. */
+:root{
+  --bg:#eaf0f8;
+  --surface:#ffffff;
+  --surface-2:#f2f5fb;
+  --fg:#14213d;
+  --muted:#55627f;
+  --line:#d9e1ef;
+  --line-strong:#c3cde3;
+  --brand:#1a3a9a;
+  --on-brand:#ffffff;
+  --title:#1e3a8a;
+  --accent:#12807e;
+  --on-accent:#ffffff;
+  --accent-soft:#dbf2f0;
+  --accent-fg:#0c6b69;
+  --ai:#2246b8;
+  --star:#2b4fc0;
+  --good:#1c7a45;
+  --good-soft:#dff3e6;
+  --bezel:#101a35;
+  --shadow:0 1px 2px rgba(20,33,61,.06),0 6px 18px rgba(20,33,61,.07);
+  --font-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a1020;
+    --surface:#141c35;
+    --surface-2:#0f1730;
+    --fg:#e9efff;
+    --muted:#9aa9cb;
+    --line:#25315a;
+    --line-strong:#38467a;
+    --brand:#1b2b78;
+    --on-brand:#ffffff;
+    --title:#d9e3ff;
+    --accent:#2bb7b2;
+    --on-accent:#04201f;
+    --accent-soft:#12393a;
+    --accent-fg:#55d3ce;
+    --ai:#3a5edb;
+    --star:#86a0ff;
+    --good:#52cf86;
+    --good-soft:#12352337;
+    --bezel:#000000;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.3);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a1020;
+  --surface:#141c35;
+  --surface-2:#0f1730;
+  --fg:#e9efff;
+  --muted:#9aa9cb;
+  --line:#25315a;
+  --line-strong:#38467a;
+  --brand:#1b2b78;
+  --on-brand:#ffffff;
+  --title:#d9e3ff;
+  --accent:#2bb7b2;
+  --on-accent:#04201f;
+  --accent-soft:#12393a;
+  --accent-fg:#55d3ce;
+  --ai:#3a5edb;
+  --star:#86a0ff;
+  --good:#52cf86;
+  --good-soft:#12352337;
+  --bezel:#000000;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--font-body);font-size:15px;line-height:1.45;
+  padding-inline:16px;padding-block:28px;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ic{width:1.3em;height:1.3em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ic.solid{fill:currentColor;stroke:none}
+
+/* ---------- Pagina ---------- */
+.stage{
+  max-width:1000px;margin-inline:auto;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:56px;align-items:center;
+}
+.intro{min-width:0;display:flex;flex-direction:column;gap:20px;max-width:440px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-fg)}
+.intro h1{
+  margin:0;font-family:var(--font-display);font-weight:800;
+  font-size:clamp(44px,7vw,68px);line-height:.95;letter-spacing:-.02em;color:var(--title);
+}
+.intro p{margin:0;color:var(--muted);font-size:17px;max-width:44ch}
+.flow{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.flow-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.flow button{
+  width:100%;display:flex;align-items:center;gap:12px;text-align:left;
+  padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+}
+.flow button:hover{border-color:var(--accent)}
+.flow button[aria-current="step"]{border-color:var(--accent);background:var(--accent-soft)}
+.flow .n{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;
+  font-size:13px;font-weight:700;background:var(--brand);color:var(--on-brand);
+}
+.flow .t{font-weight:600}
+.note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+
+/* ---------- Telefono ---------- */
+.phone{
+  position:relative;display:flex;flex-direction:column;overflow:hidden;
+  width:390px;max-width:100%;height:800px;
+  background:var(--surface-2);border:9px solid var(--bezel);border-radius:40px;
+  box-shadow:0 24px 60px rgba(10,20,50,.25);
+}
+.appbar{
+  background:var(--brand);color:var(--on-brand);padding:16px 16px 18px;
+  border-radius:0 0 24px 24px;display:flex;justify-content:center;flex-shrink:0;
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:30px;letter-spacing:-.01em}
+.logo svg{width:38px;height:38px}
+main{flex:1;min-height:0;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:14px;scroll-behavior:auto}
+.title{margin:0;text-align:center;font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1.1;color:var(--title);text-wrap:balance}
+.titlebar{position:relative;display:flex;align-items:center;justify-content:center;min-height:38px}
+.titlebar .back{
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;
+}
+.titlebar .title{font-size:24px;padding-inline:46px}
+
+.search{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 14px;border:1.5px solid var(--line-strong);border-radius:14px;background:var(--surface)}
+.search:focus-within{border-color:var(--accent)}
+.search .ic{color:var(--muted)}
+.search input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:8px 0;font-size:15px}
+.search input::placeholder{color:var(--muted)}
+.ai{
+  width:40px;height:40px;border-radius:10px;border:0;background:var(--ai);color:#fff;
+  font-weight:800;font-size:14px;letter-spacing:.02em;flex-shrink:0;
+}
+.aimsg{
+  display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;
+  background:var(--accent-soft);color:var(--fg);font-size:14px;
+}
+.aimsg b{color:var(--accent-fg)}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cat{
+  display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 2px;
+  border-radius:14px;border:1.5px solid transparent;background:transparent;font-size:12.5px;font-weight:600;
+}
+.cat .ic{width:30px;height:30px;color:var(--title)}
+.cat[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.sechead h3{margin:0;font-family:var(--font-display);font-weight:800;font-size:20px;color:var(--fg)}
+.link{border:0;background:none;color:var(--accent-fg);font-weight:700;padding:4px 0}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;cursor:pointer}
+.card .top{display:flex;gap:12px;align-items:flex-start}
+.card .info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.name{border:0;background:none;padding:0;text-align:left;font-family:var(--font-display);font-weight:800;font-size:20px;line-height:1.15;color:var(--fg)}
+.role{color:var(--fg);font-weight:500}
+.meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.score{color:var(--accent-fg);font-weight:800;font-size:15px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--title);white-space:nowrap}
+.chip .ic{width:15px;height:15px;color:var(--brand)}
+:root[data-theme="dark"] .chip .ic{color:var(--star)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip .ic{color:var(--star)}}
+.card .bottom{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.thumbs{display:flex;gap:6px}
+.thumb{width:52px;height:52px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--accent-fg)}
+.acts{display:flex;flex-direction:column;align-items:stretch;gap:6px;min-width:132px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1.5px solid transparent;border-radius:999px;padding:10px 18px;font-weight:700;font-size:15px;
+  background:var(--accent);color:var(--on-accent);
+}
+.btn:hover{filter:brightness(1.06)}
+.btn.outline{background:transparent;color:var(--title);border-color:var(--line-strong)}
+.btn.outline:hover{border-color:var(--accent)}
+.btn.brand{background:var(--brand);color:var(--on-brand)}
+.btn.small{padding:6px 10px;font-size:13px;font-weight:600;border-radius:8px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.btn.icon{padding:10px;width:44px;height:44px;flex-shrink:0}
+.btn.icon .ic{width:20px;height:20px}
+.textbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;background:none;color:var(--muted);font-size:13px;font-weight:600;padding:2px}
+.textbtn .ic{width:16px;height:16px}
+
+.stars{position:relative;display:inline-flex;vertical-align:middle}
+.stars .base,.stars .fill{display:flex;white-space:nowrap}
+.stars .base{color:var(--line-strong)}
+.stars .fill{position:absolute;inset:0 auto 0 0;overflow:hidden;color:var(--star)}
+.stars .ic{width:16px;height:16px}
+.stars.big .ic{width:20px;height:20px}
+
+.av{position:relative;flex-shrink:0;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(140deg,color-mix(in srgb,var(--h) 60%,#fff),var(--h));color:#fff;
+  font-family:var(--font-display);font-weight:800;font-size:22px}
+.av .chk{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--good);color:#fff;display:grid;place-items:center;border:2px solid var(--surface)}
+:root[data-theme="dark"] .av .chk{color:#062314}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .av .chk{color:#062314}}
+.av .chk .ic{width:12px;height:12px;stroke-width:3}
+.av.lg{width:112px;height:112px;font-size:38px;box-shadow:0 0 0 4px var(--surface),0 0 0 7px var(--accent)}
+.av.lg .chk{width:34px;height:34px;right:2px;bottom:2px}
+.av.lg .chk .ic{width:18px;height:18px}
+.av.sm{width:52px;height:52px;font-size:18px}
+
+/* Perfil */
+.hero{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-top:6px}
+.hero .name{font-size:26px;text-align:center}
+.hero .role{color:var(--title);font-weight:700;font-size:17px}
+.h3{margin:0;font-family:var(--font-display);font-weight:800;font-size:19px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{aspect-ratio:1;border-radius:14px;background:var(--surface);border:1px solid var(--line);padding:8px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;color:var(--accent-fg);min-width:0}
+.tile .ic{width:28px;height:28px}
+.tile span{font-size:12px;line-height:1.2;font-weight:600;color:var(--fg)}
+.reviews{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding-inline:16px;padding-bottom:4px}
+.review{scroll-snap-align:start;flex:0 0 70%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;justify-content:space-between}
+.review p{margin:0}
+.review small{color:var(--muted);font-weight:600}
+
+/* Formulario */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.who{flex-direction:row;align-items:center;gap:12px}
+.lbl{font-weight:700;font-size:15px}
+.field{width:100%;padding:11px 12px;border:1.5px solid var(--line-strong);border-radius:12px;background:var(--surface-2);min-width:0}
+.field:focus{border-color:var(--accent);outline:0}
+.slots{display:flex;flex-wrap:wrap;gap:8px}
+.slot{padding:9px 14px;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;font-weight:600;font-size:14px}
+.slot[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.slot[disabled]{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.est{text-align:center;font-family:var(--font-display);font-weight:800;font-size:28px;padding:10px;border:1.5px solid var(--line-strong);border-radius:12px;font-variant-numeric:tabular-nums}
+.est small{display:block;font-family:var(--font-body);font-weight:500;font-size:12.5px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{display:flex;align-items:center;gap:8px;padding:10px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-size:14px;line-height:1.25;min-width:0}
+.opt input{accent-color:var(--accent);width:18px;height:18px;flex-shrink:0;margin:0}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt small{display:block;color:var(--muted)}
+.opts.one{grid-template-columns:1fr 1fr}
+
+/* Barras */
+.actionbar{flex-shrink:0;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px;display:flex;flex-direction:column;gap:8px}
+.actionbar .row{display:flex;gap:8px;align-items:center}
+.actionbar .row .btn:not(.icon):first-child{flex:1.3}
+.total{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.total b{color:var(--fg);font-variant-numeric:tabular-nums}
+.tabbar{flex-shrink:0;background:var(--brand);color:var(--on-brand);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 6px 10px}
+.tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:color-mix(in srgb,var(--on-brand) 72%,var(--brand));font-size:12.5px;font-weight:600;padding:8px 2px}
+.tab .ic{width:24px;height:24px}
+.tab[aria-current="page"]{color:#fff}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:-6px;left:22%;right:22%;height:3px;border-radius:0 0 3px 3px;background:#5fe0da}
+
+/* Pedidos, cuenta, servicios */
+.list{display:flex;flex-direction:column;gap:10px}
+.row-card{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;width:100%;text-align:left}
+.row-card .tileic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-fg);flex-shrink:0}
+.row-card .grow{min-width:0;flex:1}
+.row-card b{display:block}
+.row-card span.s{color:var(--muted);font-size:13.5px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-fg);white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.ghost{background:transparent;border:1px solid var(--line-strong);color:var(--muted)}
+.order{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.order .h{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.order .price{font-variant-numeric:tabular-nums;font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:26px 10px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.callout{background:var(--brand);color:var(--on-brand);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.callout h3{margin:0;font-family:var(--font-display);font-size:20px}
+.callout p{margin:0;opacity:.9}
+.callout .btn{background:#fff;color:#1a3a9a;align-self:flex-start}
+
+.done{align-items:center;text-align:center;gap:10px;padding-top:6px}
+.done .big{width:76px;height:76px;border-radius:50%;background:var(--good);color:#fff;display:grid;place-items:center}
+:root[data-theme="dark"] .done .big{color:#062314}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .done .big{color:#062314}}
+.done .big .ic{width:38px;height:38px;stroke-width:2.6}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;text-align:left;width:100%;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:600;text-align:right;min-width:0}
+
+/* Hoja y aviso */
+.sheet{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(6,12,30,.5)}
+.sheet[hidden]{display:none}
+.sheet .panel-s{background:var(--surface);border-radius:22px 22px 0 0;padding:16px 16px 20px;display:flex;flex-direction:column;gap:12px}
+.sheet h3{margin:0;font-family:var(--font-display);font-size:20px}
+.sheet textarea{width:100%;min-height:96px;resize:vertical}
+.sheet .row{display:flex;gap:8px}
+.sheet .row .btn{flex:1}
+.toast{position:absolute;left:16px;right:16px;bottom:84px;z-index:6;background:var(--fg);color:var(--bg);padding:11px 14px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:var(--shadow)}
+.toast[hidden]{display:none}
+
+@media (max-width:860px){
+  .stage{grid-template-columns:minmax(0,1fr);gap:28px;justify-items:center}
+  .intro{max-width:520px;width:100%}
+}
+@media (max-width:520px){
+  body{padding-block:16px}
+  .phone{height:min(800px,calc(100dvh - 32px));min-height:560px;border-width:0;border-radius:22px}
+  .intro h1{font-size:44px}
+  .intro .flow-wrap,.intro .note{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h8M18 6h2M4 12h3M13 12h7M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l9-12h-6.5z"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"/><path d="M5 19l8-8"/></symbol>
+    <symbol id="i-hammer" viewBox="0 0 24 24"><path d="M14 4l6 6-3 3-6-6z"/><path d="M12 9L4 17l3 3 8-8"/></symbol>
+    <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8 7.5L20 19M8 16.5L20 5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11.5a7 7 0 0 0-14 0C5 15 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1 1-1.1 1.8M12 17h.01"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-3-6z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol>
+  </defs>
+</svg>
+
+<div class="stage">
+  <section class="intro" aria-label="Sobre Connect">
+    <span class="eyebrow">Prototipo interactivo</span>
+    <h1>Connect</h1>
+    <p>Encuentra y contrata a trabajadores de oficios con experiencia comprobada, reseñas de otros clientes y perfil verificado.</p>
+    <div class="flow-wrap">
+      <div class="flow-label" id="flowLabel">Recorre el flujo</div>
+      <ol class="flow" id="flow" aria-labelledby="flowLabel"></ol>
+    </div>
+    <p class="note">Las personas, reseñas y precios son datos de ejemplo. La búsqueda con IA sólo reconoce palabras clave (prueba “fuga en la llave” o “se fue la luz”) y los mensajes no se envían a nadie.</p>
+  </section>
+
+  <div class="phone" id="phone">
+    <header class="appbar">
+      <div class="logo">
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12h-5a8 8 0 0 0 0 16h4" stroke="#ffffff"/>
+          <path d="M22 20l6 8" stroke="#ffffff"/>
+          <path d="M29 36h5a8 8 0 0 0 0-16h-4" stroke="#5fe0da"/>
+          <path d="M26 28l-6-8" stroke="#5fe0da"/>
+        </svg>
+        <span>Connect</span>
+      </div>
+    </header>
+    <main id="screen" tabindex="-1"></main>
+    <div class="actionbar" id="actions" hidden></div>
+    <nav class="tabbar" id="tabs" aria-label="Navegación principal"></nav>
+    <div class="sheet" id="sheet" hidden></div>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Datos de ejemplo ---------- */
+  var CATS = {
+    electricista:{label:"Electricista", icon:"plug",     hint:"Instalaciones, contactos y cortos"},
+    plomero:{label:"Plomero",          icon:"drop",     hint:"Fugas, llaves y drenaje"},
+    jardinero:{label:"Jardinero",      icon:"leaf",     hint:"Poda, plantas y mantenimiento"},
+    carpintero:{label:"Carpintero",    icon:"hammer",   hint:"Puertas, closets y muebles"},
+    costura:{label:"Costura",          icon:"scissors", hint:"Arreglos y ropa a medida"}
+  };
+  var HOME_CATS = ["electricista","plomero","jardinero","carpintero"];
+  var KEYWORDS = {
+    electricista:["luz","apagon","apagón","corto","contacto","apagador","cable","electric","foco","interruptor"],
+    plomero:["fuga","llave","tuberia","tubería","agua","boiler","drenaje","plomer","baño","lavabo","gotea"],
+    jardinero:["pasto","jardin","jardín","podar","poda","planta","arbol","árbol","macetas"],
+    carpintero:["mueble","puerta","closet","madera","repisa","carpint","cajon","cajón"],
+    costura:["vestido","costura","ropa","dobladillo","pantalon","pantalón","cierre","costurer","uniforme"]
+  };
+  var WORKERS = [
+    {id:"luis", name:"Luis G.", role:"Electricista certificado", cat:"electricista", rating:4.9, n:37, years:5, hue:"#2f5fd0", initials:"LG",
+      gallery:["Tablero eléctrico","Cableado en pared","Contactos nuevos"],
+      reviews:[["Excelente servicio, muy profesional.","María R."],["Llegó a tiempo y solucionó el problema rápido.","Juan P."],["Dejó todo limpio y me explicó qué había fallado.","Carlos S."]],
+      services:[["Instalación eléctrica residencial",350,500],["Reparación de contactos y apagadores",200,300],["Revisión por corto circuito",250,400]],
+      materials:[["Cable y conectores",80],["Interruptores y contactos",120],["Cinta aislante",30],["Consumibles",40]]},
+    {id:"carmen", name:"Carmen P.", role:"Costurera con experiencia", cat:"costura", rating:4.9, n:69, years:5, hue:"#0f8f8c", initials:"CP",
+      gallery:["Vestido azul","Blusa a medida","Vestido de fiesta"],
+      reviews:[["Me arregló el vestido en un día y quedó perfecto.","Lupita M."],["Muy cuidadosa con los detalles y precio justo.","Andrea V."],["Ya me hizo tres uniformes, siempre puntual.","Roberto L."]],
+      services:[["Arreglo de ropa (dobladillo y cierres)",80,150],["Ajuste de traje o uniforme",150,300],["Vestido a medida",600,1200]],
+      materials:[["Hilo y botones",25],["Cierre",40],["Forro o tela extra",150],["Consumibles",20]]},
+    {id:"jorge", name:"Jorge M.", role:"Maestro plomero", cat:"plomero", rating:4.8, n:53, years:5, hue:"#c0651d", initials:"JM",
+      gallery:["Llave instalada","Lavabo nuevo","Tubería reparada"],
+      reviews:[["Encontró la fuga en minutos y la dejó sellada.","Sofía T."],["Me cambió la mezcladora y no ensució nada.","Héctor D."],["Explicó el costo antes de empezar.","Patricia N."]],
+      services:[["Reparación de fuga",300,450],["Instalación de llave o mezcladora",250,400],["Destape de drenaje",350,600]],
+      materials:[["Tubería y conexiones",90],["Sellador y teflón",30],["Llave o mezcladora",220],["Consumibles",40]]},
+    {id:"ana", name:"Ana R.", role:"Jardinera y paisajista", cat:"jardinero", rating:4.8, n:28, years:3, hue:"#3a8a3f", initials:"AR",
+      gallery:["Poda de arbustos","Jardín frontal","Macetas y plantas"],
+      reviews:[["Mi patio se ve como nuevo, gracias.","Diana C."],["Recomendó plantas que aguantan el calor.","Miguel A."],["Llegó con su propia herramienta y terminó temprano.","Elena F."]],
+      services:[["Poda de árboles y arbustos",400,700],["Mantenimiento mensual de jardín",500,900],["Plantación y macetas",350,600]],
+      materials:[["Tierra y abono",120],["Plantas",200],["Retiro de residuos",80]]},
+    {id:"mario", name:"Mario T.", role:"Carpintero", cat:"carpintero", rating:4.9, n:41, years:8, hue:"#8a5a2b", initials:"MT",
+      gallery:["Closet a medida","Puerta reparada","Repisas de madera"],
+      reviews:[["El closet quedó justo como lo pedí.","Gabriela H."],["Arregló dos puertas que no cerraban.","Iván O."],["Trabajo limpio y con buen acabado.","Rosa E."]],
+      services:[["Reparación de puertas y closets",300,550],["Instalación de repisas",250,400],["Mueble a medida",1200,3000]],
+      materials:[["Madera y triplay",300],["Herrajes y bisagras",90],["Barniz o pintura",110],["Consumibles",40]]}
+  ];
+  var SLOTS = [[8,"8:00 AM"],[10,"10:00 AM"],[12,"12:00 PM"],[14,"2:00 PM"],[16,"4:00 PM"]];
+
+  /* ---------- Utilidades ---------- */
+  function $(s){return document.querySelector(s)}
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function ic(n,cls){return '<svg class="ic '+(cls||"")+'" aria-hidden="true"><use href="#i-'+n+'"/></svg>'}
+  function money(n){return "$"+n.toLocaleString("es-MX")}
+  function pad(n){return String(n).padStart(2,"0")}
+  function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+  function parseDate(s){var p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2])}
+  function fmtDate(s){
+    var t=parseDate(s).toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    return t.charAt(0).toUpperCase()+t.slice(1);
+  }
+  function byId(id){return WORKERS.filter(function(w){return w.id===id})[0]}
+  function stars(r,big){
+    var five="",i;for(i=0;i<5;i++)five+=ic("star");
+    return '<span class="stars'+(big?" big":"")+'" role="img" aria-label="'+r+' de 5 estrellas"><span class="base">'+five+'</span><span class="fill" style="width:'+(r/5*100)+'%">'+five+'</span></span>';
+  }
+  function avatar(w,size,badge){
+    return '<span class="av '+(size||"")+'" style="--h:'+w.hue+'" aria-hidden="true">'+w.initials+(badge?'<i class="chk">'+ic("check")+'</i>':"")+'</span>';
+  }
+  function verified(){return '<span class="chip">'+ic("shield")+'Perfil verificado</span>'}
+  function tomorrow(){var d=new Date();d.setDate(d.getDate()+1);return iso(d)}
+
+  /* ---------- Estado ---------- */
+  var S = {
+    screen:"home", filter:null, query:"", aiNote:"", workerId:"luis",
+    order:null, last:null, sheet:null,
+    orders:[{folio:"CN-2417",workerId:"jorge",service:"Reparación de fuga",date:"2026-09-14",slot:"10:00 AM",min:300,max:450,pay:"efectivo",status:"Completado",example:true}]
+  };
+  function newOrder(id){return {workerId:id,svc:0,date:tomorrow(),slot:8,mats:[],pay:"tarjeta"}}
+
+  function slotPast(h){
+    var now=new Date();
+    return S.order.date===iso(now) && h<=now.getHours();
+  }
+  function fixSlot(){
+    var o=S.order;
+    if(o.slot!==null && slotPast(o.slot)){
+      var free=SLOTS.filter(function(s){return !slotPast(s[0])})[0];
+      o.slot=free?free[0]:null;
+    }
+  }
+  function estimate(){
+    var o=S.order,w=byId(o.workerId),s=w.services[o.svc];
+    var m=o.mats.reduce(function(a,i){return a+w.materials[i][1]},0);
+    return {min:s[1]+m,max:s[2]+m,mats:m};
+  }
+  function slotLabel(h){return SLOTS.filter(function(s){return s[0]===h})[0][1]}
+
+  /* ---------- Pantallas ---------- */
+  function workerCard(w){
+    var thumbs="",i;
+    for(i=0;i<3;i++)thumbs+='<span class="thumb" title="'+esc(w.gallery[i])+'">'+ic(CATS[w.cat].icon)+'</span>';
+    return '<article class="card" data-id="'+w.id+'">'+
+      '<div class="top">'+avatar(w,"",true)+
+        '<div class="info">'+
+          '<button class="name" data-action="profile" data-id="'+w.id+'">'+esc(w.name)+'</button>'+
+          '<span class="role">'+esc(w.role)+'</span>'+
+          '<span class="meta">'+stars(w.rating)+'<span class="score">'+w.rating+'</span><span>('+w.n+')</span></span>'+
+          '<span class="meta">'+w.years+' años de experiencia</span>'+
+        '</div>'+
+      '</div>'+
+      verified()+
+      '<div class="bottom">'+
+        '<div class="thumbs" aria-hidden="true">'+thumbs+'</div>'+
+        '<div class="acts">'+
+          '<button class="btn" data-action="hire" data-id="'+w.id+'">Contratar</button>'+
+          '<button class="textbtn" data-action="msg" data-id="'+w.id+'">'+ic("mail")+'Enviar mensaje</button>'+
+        '</div>'+
+      '</div>'+
+    '</article>';
+  }
+
+  function viewHome(){
+    var list=WORKERS.filter(function(w){return !S.filter||w.cat===S.filter});
+    var chips=HOME_CATS.map(function(k){
+      return '<button class="cat" data-action="cat" data-cat="'+k+'" aria-pressed="'+(S.filter===k)+'">'+ic(CATS[k].icon)+CATS[k].label+'</button>';
+    }).join("");
+    var head=S.filter?("Resultados: "+CATS[S.filter].label):"Trabajadores destacados";
+    return '<h2 class="title">Inicio</h2>'+
+      '<form class="search" id="searchForm" role="search">'+ic("search")+
+        '<input id="q" type="search" autocomplete="off" placeholder="¿Qué servicio necesitas hoy?" aria-label="¿Qué servicio necesitas hoy?" value="'+esc(S.query)+'">'+
+        '<button class="ai" type="submit" aria-label="Buscar con IA">AI</button>'+
+      '</form>'+
+      (S.aiNote?'<div class="aimsg">'+ic("shield")+'<div>'+S.aiNote+'</div></div>':"")+
+      '<div class="cats">'+chips+'</div>'+
+      '<div class="sechead"><h3>'+head+'</h3><button class="link" data-action="all">Ver todos</button></div>'+
+      list.map(workerCard).join("");
+  }
+
+  function viewProfile(){
+    var w=byId(S.workerId);
+    var gal=w.gallery.map(function(g){return '<div class="tile">'+ic(CATS[w.cat].icon)+'<span>'+esc(g)+'</span></div>'}).join("");
+    var rev=w.reviews.map(function(r){return '<figure class="review" style="margin:0"><p>'+esc(r[0])+'</p><small>— '+esc(r[1])+'</small></figure>'}).join("");
+    return '<div class="titlebar"><button class="back" data-action="back" aria-label="Volver">'+ic("back")+'</button><h2 class="title">Perfil del trabajador</h2></div>'+
+      '<div class="hero">'+avatar(w,"lg",true)+
+        '<h3 class="name" style="margin:0">'+esc(w.name)+'</h3>'+
+        '<span class="role">'+esc(w.role)+'</span>'+
+        '<span class="meta">'+stars(w.rating,true)+'<span class="score">'+w.rating+'</span><span>('+w.n+' reseñas)</span></span>'+
+        '<span class="meta">'+w.years+' años de experiencia</span>'+
+        verified()+
+      '</div>'+
+      '<h3 class="h3">Galería de trabajos completados</h3><div class="gallery">'+gal+'</div>'+
+      '<h3 class="h3">Comentarios de clientes</h3><div class="reviews">'+rev+'</div>';
+  }
+
+  function viewConfirm(){
+    var o=S.order,w=byId(o.workerId),e=estimate();
+    var svc=w.services.map(function(s,i){return '<option value="'+i+'"'+(i===o.svc?" selected":"")+'>'+esc(s[0])+'</option>'}).join("");
+    var slots=SLOTS.map(function(s){
+      return '<button type="button" class="slot" id="slot'+s[0]+'" data-action="slot" data-h="'+s[0]+'" aria-pressed="'+(o.slot===s[0])+'"'+(slotPast(s[0])?" disabled":"")+'>'+s[1]+'</button>';
+    }).join("");
+    var mats=w.materials.map(function(m,i){
+      return '<label class="opt"><input type="checkbox" id="mat'+i+'" name="mat" value="'+i+'"'+(o.mats.indexOf(i)>-1?" checked":"")+'><span>'+esc(m[0])+'<small>+'+money(m[1])+'</small></span></label>';
+    }).join("");
+    return '<div class="titlebar"><button class="back" data-action="back" aria-label="Volver">'+ic("back")+'</button><h2 class="title">Confirmar contratación</h2></div>'+
+      '<section class="panel who">'+avatar(w,"sm",true)+'<div><b>'+esc(w.name)+' · '+esc(CATS[w.cat].label)+'</b><br>'+verified()+'</div></section>'+
+      '<section class="panel"><label class="lbl" for="svc">Servicio</label><select class="field" id="svc">'+svc+'</select></section>'+
+      '<section class="panel">'+
+        '<label class="lbl" for="date">Fecha</label>'+
+        '<input class="field" type="date" id="date" min="'+iso(new Date())+'" value="'+o.date+'">'+
+        '<div class="lbl" id="slotLbl">Hora de llegada</div>'+
+        '<div class="slots" role="group" aria-labelledby="slotLbl">'+slots+'</div>'+
+        '<small style="color:var(--muted)">'+fmtDate(o.date)+(o.slot!==null?", "+slotLabel(o.slot):"")+'</small>'+
+      '</section>'+
+      '<section class="panel">'+
+        '<div class="lbl">Costo estimado</div>'+
+        '<div class="est" id="est">'+money(e.min)+' – '+money(e.max)+' MXN<small>El precio final se acuerda con el trabajador antes de empezar.</small></div>'+
+        '<div class="lbl" id="matLbl">Materiales adicionales (opcional)</div>'+
+        '<div class="opts" role="group" aria-labelledby="matLbl">'+mats+'</div>'+
+        '<div class="lbl" id="payLbl">Método de pago</div>'+
+        '<div class="opts one" role="radiogroup" aria-labelledby="payLbl">'+
+          '<label class="opt"><input type="radio" id="payT" name="pay" value="tarjeta"'+(o.pay==="tarjeta"?" checked":"")+'><span>Tarjeta</span></label>'+
+          '<label class="opt"><input type="radio" id="payE" name="pay" value="efectivo"'+(o.pay==="efectivo"?" checked":"")+'><span>Efectivo</span></label>'+
+        '</div>'+
+      '</section>';
+  }
+
+  function viewSuccess(){
+    var r=S.last,w=byId(r.workerId);
+    return '<section class="panel done"><div class="big">'+ic("check")+'</div>'+
+      '<h2 class="title" style="font-size:24px">Solicitud enviada</h2>'+
+      '<p style="margin:0;color:var(--muted)">'+esc(w.name)+' revisará tu solicitud y te confirmará. Folio <b style="color:var(--fg)">'+r.folio+'</b>.</p>'+
+      '<dl class="kv">'+
+        '<dt>Servicio</dt><dd>'+esc(r.service)+'</dd>'+
+        '<dt>Fecha</dt><dd>'+fmtDate(r.date)+'</dd>'+
+        '<dt>Hora</dt><dd>'+r.slot+'</dd>'+
+        '<dt>Estimado</dt><dd>'+money(r.min)+' – '+money(r.max)+' MXN</dd>'+
+        '<dt>Pago</dt><dd>'+(r.pay==="tarjeta"?"Tarjeta":"Efectivo")+'</dd>'+
+      '</dl></section>'+
+      '<button class="btn" data-action="tab" data-tab="orders">Ver mis pedidos</button>'+
+      '<button class="btn outline" data-action="tab" data-tab="home">Volver al inicio</button>';
+  }
+
+  function viewServices(){
+    return '<h2 class="title">Servicios</h2><div class="list">'+
+      Object.keys(CATS).map(function(k){
+        return '<button class="row-card" data-action="cat-go" data-cat="'+k+'"><span class="tileic">'+ic(CATS[k].icon)+'</span><span class="grow"><b>'+CATS[k].label+'</b><span class="s">'+CATS[k].hint+'</span></span>'+ic("chevron")+'</button>';
+      }).join("")+'</div>';
+  }
+
+  function viewOrders(){
+    var body;
+    if(!S.orders.length){
+      body='<div class="empty">'+ic("box")+'<div>Aún no tienes pedidos.</div><button class="btn" data-action="tab" data-tab="home">Buscar un trabajador</button></div>';
+    }else{
+      body='<div class="list">'+S.orders.map(function(o){
+        var w=byId(o.workerId);
+        return '<article class="order"><div class="h"><div><b>'+esc(o.service)+'</b><div style="color:var(--muted);font-size:13.5px">'+esc(w.name)+' · '+esc(CATS[w.cat].label)+'</div></div>'+
+          '<span class="pill '+(o.status==="Completado"?"good":"")+'">'+o.status+'</span></div>'+
+          '<div style="color:var(--muted);font-size:13.5px">'+fmtDate(o.date)+' · '+o.slot+'</div>'+
+          '<div class="h"><span class="price">'+money(o.min)+' – '+money(o.max)+' MXN</span>'+(o.example?'<span class="pill ghost">Ejemplo</span>':'<span style="color:var(--muted);font-size:13px">'+o.folio+'</span>')+'</div></article>';
+      }).join("")+'</div>';
+    }
+    return '<h2 class="title">Pedidos</h2>'+body;
+  }
+
+  function viewAccount(){
+    var rows=[["pin","Direcciones guardadas"],["card","Métodos de pago"],["help","Ayuda y soporte"]].map(function(r){
+      return '<button class="row-card" data-action="stub"><span class="tileic">'+ic(r[0])+'</span><span class="grow"><b>'+r[1]+'</b></span>'+ic("chevron")+'</button>';
+    }).join("");
+    return '<h2 class="title">Mi cuenta</h2>'+
+      '<section class="panel who"><span class="av sm" style="--h:#2f5fd0" aria-hidden="true">'+ic("user")+'</span><div><b>Tu cuenta</b><br><span style="color:var(--muted);font-size:13.5px">Cuenta de ejemplo</span></div></section>'+
+      '<div class="list">'+rows+'</div>'+
+      '<section class="callout"><h3>¿Tienes un oficio?</h3><p>Crea tu perfil verificado, muestra tus trabajos y recibe solicitudes de clientes.</p><button class="btn" data-action="stub">Ofrecer mis servicios</button></section>';
+  }
+
+  function actionsHtml(){
+    if(S.screen==="profile"){
+      var w=byId(S.workerId);
+      return '<div class="row"><button class="btn" data-action="hire" data-id="'+w.id+'">Contratar</button>'+
+        '<button class="btn outline" data-action="quote" data-id="'+w.id+'">Cotización</button>'+
+        '<button class="btn outline icon" data-action="msg" data-id="'+w.id+'" aria-label="Enviar mensaje">'+ic("chat")+'</button></div>';
+    }
+    if(S.screen==="confirm"){
+      var e=estimate();
+      return '<div class="total"><span>Total estimado</span><b id="tot">'+money(e.min)+' – '+money(e.max)+' MXN</b></div>'+
+        '<button class="btn" data-action="confirm"'+(S.order.slot===null?" disabled":"")+'>Confirmar y contratar</button>';
+    }
+    return "";
+  }
+
+  var TABS=[["home","Inicio","home"],["services","Servicios","sliders"],["orders","Pedidos","calendar"],["account","Mi cuenta","user"]];
+  function activeTab(){
+    return {home:"home",profile:"home",confirm:"home",services:"services",orders:"orders",success:"orders",account:"account"}[S.screen];
+  }
+
+  /* ---------- Render ---------- */
+  var VIEWS={home:viewHome,profile:viewProfile,confirm:viewConfirm,success:viewSuccess,services:viewServices,orders:viewOrders,account:viewAccount};
+
+  function render(top){
+    var main=$("#screen"),keep=main.scrollTop,act=document.activeElement,fid=act&&act.id?act.id:null;
+    main.innerHTML=VIEWS[S.screen]();
+    main.scrollTop=top?0:keep;
+    var a=actionsHtml(),bar=$("#actions");
+    bar.innerHTML=a;bar.hidden=!a;
+    var cur=activeTab();
+    $("#tabs").innerHTML=TABS.map(function(t){
+      return '<button class="tab" data-action="tab" data-tab="'+t[0]+'"'+(cur===t[0]?' aria-current="page"':"")+'>'+ic(t[2])+t[1]+'</button>';
+    }).join("");
+    renderFlow();
+    if(fid&&!top){var el=document.getElementById(fid);if(el&&!el.disabled)el.focus({preventScroll:true})}
+  }
+  function renderFlow(){
+    var steps=[["home","Inicio"],["profile","Perfil del trabajador"],["confirm","Confirmar contratación"]];
+    $("#flow").innerHTML=steps.map(function(s,i){
+      return '<li><button data-action="flow" data-step="'+s[0]+'"'+(S.screen===s[0]?' aria-current="step"':"")+'><span class="n">'+(i+1)+'</span><span class="t">'+s[1]+'</span></button></li>';
+    }).join("");
+  }
+  function go(screen){S.screen=screen;render(true)}
+
+  function toast(msg){
+    var t=$("#toast");t.textContent=msg;t.hidden=false;
+    clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},2800);
+  }
+
+  /* ---------- Hoja de mensaje / cotizacion ---------- */
+  function openSheet(mode,id){
+    var w=byId(id),q=mode==="quote";
+    S.sheet={mode:mode,id:id};
+    var sh=$("#sheet");
+    sh.innerHTML='<div class="panel-s" role="dialog" aria-modal="true" aria-labelledby="shT">'+
+      '<h3 id="shT">'+(q?"Solicitar cotización a ":"Mensaje para ")+esc(w.name)+'</h3>'+
+      '<label class="lbl" for="shText" style="font-weight:600">'+(q?"Describe el trabajo que necesitas":"Escribe tu mensaje")+'</label>'+
+      '<textarea class="field" id="shText" placeholder="'+(q?"Ejemplo: se botó una pastilla del tablero y no tengo luz en la cocina.":"Ejemplo: ¿Tienes disponibilidad esta semana?")+'"></textarea>'+
+      '<div class="row"><button class="btn outline" data-action="sheet-close">Cancelar</button>'+
+      '<button class="btn" id="shSend" data-action="sheet-send" disabled>'+(q?"Solicitar":"Enviar")+'</button></div></div>';
+    sh.hidden=false;
+    $("#shText").focus();
+  }
+  function closeSheet(){S.sheet=null;$("#sheet").hidden=true}
+
+  /* ---------- Busqueda con IA (simulada) ---------- */
+  function runSearch(){
+    var q=$("#q").value.trim();S.query=q;
+    if(!q){S.filter=null;S.aiNote="";render();return}
+    var t=q.toLowerCase(),found=null;
+    Object.keys(KEYWORDS).some(function(k){
+      return KEYWORDS[k].some(function(w){if(t.indexOf(w)>-1){found=k;return true}return false});
+    });
+    if(!found){
+      WORKERS.some(function(w){if(w.name.toLowerCase().indexOf(t)>-1||w.role.toLowerCase().indexOf(t)>-1){found=w.cat;return true}return false});
+    }
+    if(found){S.filter=found;S.aiNote="Connect AI entendió que necesitas <b>"+CATS[found].label.toLowerCase()+"</b>. Estos son los perfiles disponibles."}
+    else{S.filter=null;S.aiNote="No reconocí ese servicio. Prueba con electricista, plomero, jardinero, carpintero o costura."}
+    render(true);
+  }
+
+  /* ---------- Eventos ---------- */
+  document.addEventListener("click",function(ev){
+    var el=ev.target.closest("[data-action]");
+    if(!el){
+      var card=ev.target.closest(".card");
+      if(card&&!ev.target.closest("button")){S.workerId=card.dataset.id;go("profile")}
+      return;
+    }
+    var a=el.dataset.action,id=el.dataset.id;
+    switch(a){
+      case "tab":
+        if(el.dataset.tab==="home"&&S.screen==="home"){S.filter=null;S.query="";S.aiNote=""}
+        go(el.dataset.tab);break;
+      case "cat":
+        S.filter=(S.filter===el.dataset.cat)?null:el.dataset.cat;S.query="";S.aiNote="";render();break;
+      case "cat-go":
+        S.filter=el.dataset.cat;S.query="";S.aiNote="";go("home");break;
+      case "all":
+        S.filter=null;S.query="";S.aiNote="";render();break;
+      case "profile":
+        S.workerId=id;go("profile");break;
+      case "hire":
+        S.workerId=id;S.order=newOrder(id);fixSlot();go("confirm");break;
+      case "msg":openSheet("msg",id);break;
+      case "quote":openSheet("quote",id);break;
+      case "back":
+        go(S.screen==="confirm"?"profile":"home");break;
+      case "slot":
+        S.order.slot=Number(el.dataset.h);render();break;
+      case "confirm":
+        var o=S.order,w=byId(o.workerId),e=estimate();
+        var rec={folio:"CN-"+(2418+S.orders.length),workerId:o.workerId,service:w.services[o.svc][0],date:o.date,slot:slotLabel(o.slot),min:e.min,max:e.max,pay:o.pay,status:"Esperando confirmación"};
+        S.orders.unshift(rec);S.last=rec;go("success");break;
+      case "flow":
+        var st=el.dataset.step;
+        if(st==="home"){go("home")}
+        else if(st==="profile"){go("profile")}
+        else{S.order=(S.order&&S.order.workerId===S.workerId)?S.order:newOrder(S.workerId);fixSlot();go("confirm")}
+        break;
+      case "stub":toast("Esta pantalla no está incluida en el prototipo.");break;
+      case "sheet-close":closeSheet();break;
+      case "sheet-send":
+        var m=S.sheet,ww=byId(m.id);closeSheet();
+        toast((m.mode==="quote"?"Cotización solicitada a ":"Mensaje enviado a ")+ww.name+" (simulado)");break;
+    }
+  });
+  document.addEventListener("submit",function(ev){
+    if(ev.target.id==="searchForm"){ev.preventDefault();runSearch()}
+  });
+  document.addEventListener("input",function(ev){
+    if(ev.target.id==="shText"){$("#shSend").disabled=!ev.target.value.trim()}
+  });
+  document.addEventListener("change",function(ev){
+    var t=ev.target,o=S.order;
+    if(!o||S.screen!=="confirm")return;
+    if(t.id==="svc"){o.svc=Number(t.value);render()}
+    else if(t.id==="date"){if(t.value){o.date=t.value;fixSlot();render()}}
+    else if(t.name==="mat"){
+      o.mats=Array.prototype.slice.call(document.querySelectorAll('input[name="mat"]:checked')).map(function(c){return Number(c.value)});
+      render();
+    }
+    else if(t.name==="pay"){o.pay=t.value}
+  });
+  document.addEventListener("keydown",function(ev){
+    if(ev.key==="Escape"&&S.sheet)closeSheet();
+  });
+
+  render(true);
+})();
+</script>
+
+</body></html>
